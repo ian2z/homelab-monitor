@@ -9,6 +9,7 @@ use ratatui::{
     Terminal,
 };
 use std::{error::Error, io, time::Duration};
+use sysinfo::System;
 
 fn main() -> Result<(), Box<dyn Error>> {
     enable_raw_mode()?; // desable terminal eco and line buffer
@@ -17,8 +18,20 @@ fn main() -> Result<(), Box<dyn Error>> {
     let backend = CrosstermBackend::new(stdout);
     let mut terminal = Terminal::new(backend)?;
 
+    let mut sys = System::new();
+
     // TUI loop
     loop {
+        sys.refresh_cpu_usage();
+        sys.refresh_memory();
+
+        //CPU global use, in %
+        let cpu_usage = sys.global_cpu_usage();
+        
+        //RAM in MB
+        let used_mem = sys.used_memory() / 1024 / 1024;
+        let total_mem = sys.total_memory() / 1024 /1024;
+
         terminal.draw(|f| {
             let area = f.area(); // terminal window size
 
@@ -27,7 +40,12 @@ fn main() -> Result<(), Box<dyn Error>> {
             .title( " Homelab Monitor - Press 'q' to exit ")
             .borders(Borders::ALL);
 
-            let paragraph = Paragraph::new("\n waiting new system metrics...").block(block);
+            let metrics_text = format!(
+                "\n CPU use: {:.1}%\n\n RAM use: {} MB / {} MB",
+                cpu_usage, used_mem, total_mem
+            );
+
+            let paragraph = Paragraph::new(metrics_text).block(block);
 
             // render widget
             f.render_widget(paragraph, area);
