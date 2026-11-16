@@ -2,6 +2,7 @@
 name = "homelab_monitor"
 version = "0.1.0"
 edition = "2024"
+default-run = "homelab-monitor"
 
 [[bin]]
 name = "homelab-monitor"
