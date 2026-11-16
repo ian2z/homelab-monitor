@@ -3,7 +3,22 @@ name = "homelab_monitor"
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+name = "homelab-monitor"
+path = "src/main.rs"
+
+[[bin]]
+name = "homelab-agent"
+path = "src/bin/agent.rs"
+
 [dependencies]
 crossterm = "0.29.0"
 ratatui = "0.30.2"
 sysinfo = "0.39.6"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1", features = ["full"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+axum = "0.8"
+toml = "0.8"
+
