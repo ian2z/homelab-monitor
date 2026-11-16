@@ -33,7 +33,13 @@ PORT=9090 cargo run --bin homelab-agent
 
 ### 2. Configurar os hosts em `config.toml`
 
-Crie ou edite o arquivo `config.toml` na raiz do projeto:
+Copie o modelo de exemplo para criar o seu `config.toml`:
+
+```bash
+cp config.example.toml config.toml
+```
+
+Edite o arquivo `config.toml` com os nós do seu homelab:
 
 ```toml
 refresh_rate_ms = 1000
@@ -50,6 +56,8 @@ url = "http://192.168.1.15:9191"
 name = "Proxmox Node"
 url = "http://192.168.1.50:9191"
 ```
+
+> O arquivo `config.toml` é ignorado pelo Git para não expor os IPs locais da sua rede.
 
 ### 3. Iniciar o Dashboard TUI
 

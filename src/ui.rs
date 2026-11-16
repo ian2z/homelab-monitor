@@ -35,8 +35,8 @@ fn render_header(f: &mut Frame, area: Rect, app: &App) {
     let total_nodes = app.nodes.len();
 
     let header_text = vec![
-        Span::styled("⚡ HOMELAB MONITOR ", Style::default().fg(Color::Cyan).bold()),
-        Span::styled("(BTOP style) ", Style::default().fg(Color::DarkGray)),
+        Span::styled("HOMELAB MONITOR ", Style::default().fg(Color::Cyan).bold()),
+        Span::styled("(btop style) ", Style::default().fg(Color::DarkGray)),
         Span::raw("│ "),
         Span::styled(
             format!("Nodes Online: {}/{} ", online_count, total_nodes),
@@ -103,7 +103,7 @@ fn render_content(f: &mut Frame, area: Rect, app: &App) {
 
 fn render_nodes_list(f: &mut Frame, area: Rect, app: &App) {
     let block = Block::default()
-        .title(" 🖥️  Homelab Nodes ")
+        .title(" Homelab Nodes ")
         .title_style(Style::default().fg(Color::Yellow).bold())
         .borders(Borders::ALL)
         .border_type(BorderType::Rounded)
@@ -164,9 +164,9 @@ fn render_node_card(f: &mut Frame, area: Rect, node: &crate::app::NodeState, is_
     };
 
     let (status_badge, status_color) = match &node.status {
-        NodeStatus::Online => ("● ONLINE", Color::Green),
-        NodeStatus::Connecting => ("○ CONNECTING", Color::Yellow),
-        NodeStatus::Offline(_) => ("✖ OFFLINE", Color::Red),
+        NodeStatus::Online => ("ONLINE", Color::Green),
+        NodeStatus::Connecting => ("CONNECTING", Color::Yellow),
+        NodeStatus::Offline(_) => ("OFFLINE", Color::Red),
     };
 
     let title_line = Line::from(vec![
@@ -276,8 +276,8 @@ fn render_node_details(f: &mut Frame, area: Rect, app: &App) {
     let selected_node = app.nodes.get(app.selected_index);
 
     let title = match selected_node {
-        Some(node) => format!(" 📊 Detailed View: {} ", node.config.name),
-        None => " 📊 Detailed View ".to_string(),
+        Some(node) => format!(" Details: {} ", node.config.name),
+        None => " Details ".to_string(),
     };
 
     let block = Block::default()
@@ -442,7 +442,7 @@ fn render_node_details(f: &mut Frame, area: Rect, app: &App) {
 
     // Disks
     let disk_block = Block::default()
-        .title(" 💾 Disks ")
+        .title(" Disks ")
         .title_style(Style::default().fg(Color::Yellow).bold())
         .borders(Borders::ALL)
         .border_type(BorderType::Rounded)
@@ -475,7 +475,7 @@ fn render_node_details(f: &mut Frame, area: Rect, app: &App) {
 
     // Network
     let net_block = Block::default()
-        .title(" 🌐 Network Interfaces ")
+        .title(" Network Interfaces ")
         .title_style(Style::default().fg(Color::Cyan).bold())
         .borders(Borders::ALL)
         .border_type(BorderType::Rounded)
@@ -495,8 +495,8 @@ fn render_node_details(f: &mut Frame, area: Rect, app: &App) {
         if n.rx_bytes > 0 || n.tx_bytes > 0 {
             net_lines.push(Line::from(vec![
                 Span::styled(format!("{:<10} ", n.interface_name), Style::default().bold().fg(Color::White)),
-                Span::styled(format!("▼ {} ", format_rate(n.rx_rate_bytes_sec)), Style::default().fg(Color::Green)),
-                Span::styled(format!("▲ {}", format_rate(n.tx_rate_bytes_sec)), Style::default().fg(Color::Blue)),
+                Span::styled(format!("RX: {:<9} ", format_rate(n.rx_rate_bytes_sec)), Style::default().fg(Color::Green)),
+                Span::styled(format!("TX: {}", format_rate(n.tx_rate_bytes_sec)), Style::default().fg(Color::Blue)),
             ]));
         }
     }

@@ -1,0 +1,12 @@
+# Homelab Monitor Configuration Template
+# Copy this file to config.toml and customize your nodes.
+
+refresh_rate_ms = 1000
+
+[[nodes]]
+name = "Local Host"
+url = "http://127.0.0.1:9191"
+
+[[nodes]]
+name = "Remote Node 1"
+url = "http://192.168.1.100:9191"

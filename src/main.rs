@@ -14,6 +14,12 @@ use tokio::sync::mpsc;
 
 fn load_or_create_config() -> AppConfig {
     let config_path = Path::new("config.toml");
+    let example_path = Path::new("config.example.toml");
+
+    if !config_path.exists() && example_path.exists() {
+        let _ = fs::copy(example_path, config_path);
+    }
+
     if config_path.exists() {
         if let Ok(content) = fs::read_to_string(config_path) {
             if let Ok(cfg) = toml::from_str::<AppConfig>(&content) {

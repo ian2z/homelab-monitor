@@ -26,7 +26,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let addr: SocketAddr = format!("{}:{}", host, port).parse()?;
 
     println!("==================================================");
-    println!("  📡 Homelab Agent v{}", env!("CARGO_PKG_VERSION"));
+    println!("  Homelab Agent v{}", env!("CARGO_PKG_VERSION"));
     println!("  Listening on: http://{}", addr);
     println!("  Metrics endpoint: http://{}/metrics", addr);
     println!("==================================================");
