@@ -1,36 +1,41 @@
-# ⚡ Homelab Monitor
+# Homelab Monitor
 
-Um monitor de homelab leve para terminal no estilo **BTOP**, construído em Rust com [Ratatui](https://github.com/ratatui/ratatui) e [Axum](https://github.com/tokio-rs/axum).
+Monitor de recursos para homelab em terminal, inspirado no btop, desenvolvido em Rust com [Ratatui](https://github.com/ratatui/ratatui) e [Axum](https://github.com/tokio-rs/axum).
 
-Permite monitorar múltiplos servidores, VMs, Raspberry Pis e containers na sua rede local em tempo real diretamente do seu terminal.
-
----
-
-## 🏗️ Arquitetura
-
-O projeto é dividido em dois componentes leves:
-
-1. **`homelab-agent`**: Daemon ultraleve (~5MB de RAM) que roda em cada máquina do seu homelab coletando métricas (CPU, RAM, Swap, Discos, Rede, Uptime, Load Average) via `sysinfo` e expondo um endpoint HTTP JSON (`/metrics`).
-2. **`homelab-monitor`**: O dashboard TUI interativo em Ratatui. Ele lê a lista de hosts no arquivo `config.toml`, faz polling assíncrono em paralelo e renderiza as métricas com gráficos Sparkline e medidores visuais.
+Permite acompanhar o status de múltiplos servidores, máquinas virtuais, containers e nós da rede local a partir de um único painel no terminal.
 
 ---
 
-## 🚀 Como Usar
+## Arquitetura
 
-### 1. Iniciar o Agente nas máquinas que deseja monitorar
+O sistema é dividido em dois componentes:
 
-Na máquina (ou localmente para teste):
+1. **`homelab-agent`**: Daemon executado em cada nó a ser monitorado. Coleta métricas de sistema (CPU, memória, swap, discos, rede, uptime e carga média) utilizando `sysinfo` e disponibiliza um endpoint HTTP JSON (`/metrics`).
+2. **`homelab-monitor`**: Interface TUI interativa que consulta periodicamente os hosts definidos em `config.toml` e exibe os dados em tempo real com gráficos e indicadores visuais.
+
+---
+
+## Instalação e Execução
+
+### 1. Iniciar o agente nos nós a serem monitorados
+
+Execute o binário do agente no nó remoto ou localmente:
+
 ```bash
 cargo run --bin homelab-agent
 ```
-> Por padrão escuta em `0.0.0.0:9191`. Você pode mudar a porta com a variável de ambiente `PORT=9999`.
 
-### 2. Configurar os nós no `config.toml`
+Por padrão, o serviço escuta em `0.0.0.0:9191`. A porta pode ser personalizada através da variável de ambiente:
+
+```bash
+PORT=9090 cargo run --bin homelab-agent
+```
+
+### 2. Configurar os hosts em `config.toml`
 
 Crie ou edite o arquivo `config.toml` na raiz do projeto:
 
 ```toml
-# Intervalo de atualização em milissegundos
 refresh_rate_ms = 1000
 
 [[nodes]]
@@ -50,18 +55,16 @@ url = "http://192.168.1.50:9191"
 
 ```bash
 cargo run --bin homelab-monitor
-# ou simplesmente:
-cargo run
 ```
 
 ---
 
-## ⌨️ Atalhos de Teclado no Dashboard
+## Navegação
 
 | Tecla | Ação |
 |---|---|
-| `q` ou `Esc` | Sair do monitor |
+| `q` / `Esc` | Sair |
 | `↑` / `k` | Selecionar nó anterior |
 | `↓` / `j` / `Tab` | Selecionar próximo nó |
-| `r` | Recarregar `config.toml` |
-| `Ctrl+C` | Encerrar |
+| `r` | Recarregar arquivo de configuração |
+| `Ctrl+C` | Encerrar aplicação |
